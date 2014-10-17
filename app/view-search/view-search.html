@@ -1,0 +1,62 @@
+
+
+<div class="row">
+
+	<!-- left col div -->
+	<div class="col-md-3" style="padding-left:40px;">
+		<!-- category nav -->
+		<accordion close-others="oneAtATime">
+		    <accordion-group is-open="isCatFilterOpen">
+		    	<accordion-heading>
+		            Categories <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isCatFilterOpen, 'glyphicon-chevron-right': !isCatFilterOpen}"></i>
+		        </accordion-heading>
+		    	<!-- Category Navigation -->
+				<div ng-repeat="(cat, count) in taxonomy" style="padding-left:20px">
+			  		<div style="padding-left:{{cat.split('/').length*10}}px">
+			  		<!--a ng-href="#/c/{{cat.replace('/','-')}}">{{cat.split('/')[cat.split('/').length-1]}}</a> ({{count}})-->
+			  		<a ng-href="#/c/{{encodePath(cat)}}">{{cat.split('/')[cat.split('/').length-1].replace(' and ',' & ')}}</a> ({{count}})
+			  		</div>
+				</div>
+		    </accordion-group>
+		</accordion>
+
+
+
+		<!-- Facets -->
+		<accordion ng-repeat="(facet, values) in facet_fields" close-others="oneAtATime" ng-if="facet!='cpath'">
+			<accordion-group is-open="isFacetFilterOpen">
+				<accordion-heading>
+			    	<span ng-if="solr_params[facet+'.label']">
+			       		{{solr_params[facet+'.label']}}
+			   		</span>
+			   		<!-- if the facet doesn't have a label being passed, use parseFacetLabel -->
+			   		<span ng-if="!solr_params[facet+'.label']">
+			   			{{parseFacetLabel(facet)}}
+			   		</span>
+			        <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isFacetFilterOpen, 'glyphicon-chevron-right': !isFacetFilterOpen}"></i>
+			    </accordion-heading>
+				<div ng-repeat="(val, count) in values" style="padding-left:20px">
+					<!--a ng-click="clickFacet(facet,val,$routeParams)">{{val}}</a> ({{count}}) -->
+					<input ng-click="clickFacet(facet,val,$routeParams,filter_separator)" ng-checked="checkCheckbox(facet,val,$routeParams)" type="checkbox" /> {{val}} ({{count}})
+
+				</div>
+		    </accordion-group>
+		</accordion>
+
+
+	</div>
+	<!-- /left col -->
+
+	<!-- middle col -->
+	<div class="col-md-9" style="padding-left:20px">
+	<input ng-model="query" name="Search"></input>
+	  <ul>
+	    <li ng-repeat="doc in docs">
+	      {{doc.name}}
+	      <p>{{doc.short_description}}</p>
+	    </li>
+	  </ul>
+	<!-- /middle -->
+	</div>
+</div>
+
