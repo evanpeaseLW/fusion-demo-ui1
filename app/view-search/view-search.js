@@ -138,6 +138,11 @@ angular.module('myApp.viewSearch', ['ngRoute'])
 	$scope.encodePath =  function(path) { return encodePath(path) };
 	$scope.parseFacetLabel = function(field) { return parseFacetLabel(field)};
 
+
+	$scope.clickSearch = function(query) {
+		$location.search('q', query);
+	}
+
 	$scope.clickFacet = function(fname, fvalue, routeParams, filter_separator) {
 
 		console.log('clicked on ' + fname + ':' + fvalue);

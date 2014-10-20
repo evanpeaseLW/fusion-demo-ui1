@@ -14,7 +14,7 @@
 				<div ng-repeat="(cat, count) in taxonomy" style="padding-left:20px">
 			  		<div style="padding-left:{{cat.split('/').length*10}}px">
 			  		<!--a ng-href="#/c/{{cat.replace('/','-')}}">{{cat.split('/')[cat.split('/').length-1]}}</a> ({{count}})-->
-			  		<a ng-href="#/c/{{encodePath(cat)}}">{{cat.split('/')[cat.split('/').length-1].replace(' and ',' & ')}}</a> ({{count}})
+			  		<a ng-href="#/c/{{encodePath(cat)}}?q={{$routeParams.q}}">{{cat.split('/')[cat.split('/').length-1].replace(' and ',' & ')}}</a> ({{count}})
 			  		</div>
 				</div>
 		    </accordion-group>
@@ -48,8 +48,11 @@
 	<!-- /left col -->
 
 	<!-- middle col -->
-	<div class="col-md-9" style="padding-left:20px">
-	<input ng-model="query" name="Search"></input>
+	<div class="col-md-9" style="padding-left:20px;padding-top:10px">
+	<form class="form-inline" role="form">
+			<input ng-model="query" name="Search" class="form-control input-lg" placeholder=""></input>
+			<button type="button" ng-click="clickSearch(query)" class="btn btn-danger btn-lg">Search</button>
+	</form>
 	  <ul>
 	    <li ng-repeat="doc in docs">
 	      {{doc.name}}
