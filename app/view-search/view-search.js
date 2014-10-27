@@ -24,6 +24,8 @@ angular.module('myApp.viewSearch', ['ngRoute'])
 
 .controller('ViewSearchCtrl', function ($scope, $http, $routeParams, $location, $route) {
 
+
+
 	var filter_separator = '~';
 	var multi_select_facets = false;
 
@@ -85,21 +87,23 @@ angular.module('myApp.viewSearch', ['ngRoute'])
 	fqs.push(cpath_fq);
 
 
-	var url = 'http://localhost:8764/api/apollo/query-pipelines/demo1-example1/collections/demo1/select';
-
+	var url = 'http://localhost:9292/localhost:8764/api/apollo/query-pipelines/demo1-example1/collections/demo1/select';
 
 	//console.log("TEST AUTH: " + btoa('admin:password123'));
 	//$http.defaults.headers.common = {"Access-Control-Request-Headers": "accept, origin, authorization"}
- 	//$http.defaults.headers.common['Authorization'] = 'Basic ' + Base64.encode('admin:password123');
+
+	//To use JSONP and avoid using a proxy, change method to JSONP, and add 'json.wrf': 'JSON_CALLBACK' to the params.
+
+
+ 	$http.defaults.headers.common['Authorization'] = 'Basic ' + btoa('admin:password123');
 	$http(
-		{method: 'JSONP',
+		{method: 'GET',
 		 url: url,
 		 params:{
 		 		'q': q,
 		 		'fq': fqs,
 		 		'wt': 'json',
-		 		'json.nl': 'map',
-		 		'json.wrf': 'JSON_CALLBACK'}
+		 		'json.nl': 'map'}
 		})
 		.success(function(data, status, headers, config) {
 		  var solr_params = data.responseHeader.params;
