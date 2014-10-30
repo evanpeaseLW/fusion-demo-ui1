@@ -28,6 +28,7 @@ angular.module('myApp.viewSearch', ['ngRoute'])
 
 	var filter_separator = '~';
 	var multi_select_facets = false;
+	var group_field = 'name_exact_s';
 
 	$scope.filter_separator = filter_separator;
 	$scope.multi_select_facets = multi_select_facets;
@@ -82,10 +83,8 @@ angular.module('myApp.viewSearch', ['ngRoute'])
 		new_fqs.push(new_fq);		
 	}
 	fqs = new_fqs;
-
 	//add category as a filter
 	fqs.push(cpath_fq);
-
 
 	var url = 'http://localhost:9292/localhost:8764/api/apollo/query-pipelines/demo1-example1/collections/demo1/select';
 
@@ -103,11 +102,21 @@ angular.module('myApp.viewSearch', ['ngRoute'])
 		 		'q': q,
 		 		'fq': fqs,
 		 		'wt': 'json',
-		 		'json.nl': 'map'}
+		 		'json.nl': 'map',
+		 		'group':'true',
+		 		'group.field':group_field,
+		 		'group.ngroups':'true',
+		 		'group.facet':'true'
+		 		}
 		})
 		.success(function(data, status, headers, config) {
 		  var solr_params = data.responseHeader.params;
-		  var docs = data.response.docs;
+		  
+		  //using groups, pass groups instead of docs
+		  //var docs = data.response.docs;
+		  var grouped_field = data.grouped[group_field];
+		  //console.log(groups);
+
 		  var facet_fields = data.facet_counts.facet_fields;
 		  var facet_queries = data.facet_counts.facet_queries;
 		  var taxonomy = facet_fields.cpath;
@@ -115,7 +124,8 @@ angular.module('myApp.viewSearch', ['ngRoute'])
 		  console.log('solr_params:'+solr_params);
 
 		  $scope.solr_params = solr_params;
-		  $scope.docs = docs;
+		  //$scope.docs = docs;
+		  $scope.grouped_field = grouped_field;
 		  $scope.facet_fields = facet_fields;
 		  $scope.facet_queries = facet_queries;
 		  $scope.taxonomy = taxonomy;
