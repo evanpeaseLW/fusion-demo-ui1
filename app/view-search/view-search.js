@@ -86,7 +86,7 @@ angular.module('myApp.viewSearch', ['ngRoute'])
 	//add category as a filter
 	fqs.push(cpath_fq);
 
-	var url = 'http://localhost:9292/localhost:8764/api/apollo/query-pipelines/store1-default/collections/store1/select';
+	var url = 'http://localhost:9292/localhost:8764/api/apollo/query-pipelines/store1-default/collections/store_local/select';
 
 	//console.log("TEST AUTH: " + btoa('admin:password123'));
 	//$http.defaults.headers.common = {"Access-Control-Request-Headers": "accept, origin, authorization"}
